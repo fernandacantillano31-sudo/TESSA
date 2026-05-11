@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Montserrat", sans-serif;
+  --font-sans: "Poppins", sans-serif;
+  
+  --color-tessa-deep: #081B33;
+  --color-tessa-blue: #123E7A;
+  --color-tessa-bright: #2E6BE6;
+  --color-tessa-bone: #F5F5F2;
+  --color-tessa-light: #D9D9D9;
+  --color-tessa-black: #1E1E1E;
+  --color-tessa-stone: #D6C3A5;
+  --color-tessa-gold: #C5A059;
+}
+
+@layer base {
+  body {
+    @apply bg-tessa-bone text-tessa-black font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight font-bold;
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px currentColor;
+  -webkit-text-fill-color: transparent;
+}
