@@ -54,15 +54,24 @@ export default function App() {
 
           {/* Desktop Menu */}
           <div className={`hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.2em] ${isScrolled ? 'text-tessa-deep' : 'text-white'}`}>
-            {['Inicio', 'Productos', 'Sostenibilidad', 'Nosotros', 'Contacto'].map((item) => (
-              <a 
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="transition-all hover:text-tessa-bright relative pb-1 opacity-70 hover:opacity-100"
-              >
-                {item}
-              </a>
-            ))}
+            {['Inicio', 'Productos', 'Sostenibilidad', 'Nosotros', 'Contacto'].map((item) => {
+              const id = item.toLowerCase();
+              return (
+                <a 
+                  key={item}
+                  href={`#${id}`}
+                  className={`transition-all hover:text-tessa-bright relative pb-1 ${activeSection === id ? 'opacity-100' : 'opacity-70 hover:opacity-100'}`}
+                >
+                  {item}
+                  {activeSection === id && (
+                    <motion.div 
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-tessa-bright"
+                    />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
           <button 
@@ -72,40 +81,76 @@ export default function App() {
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="absolute top-full left-0 w-full bg-white border-b border-tessa-deep/5 md:hidden overflow-hidden"
+            >
+              <div className="flex flex-col p-6 space-y-4">
+                {['Inicio', 'Productos', 'Sostenibilidad', 'Nosotros', 'Contacto'].map((item) => (
+                  <a 
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    className="text-tessa-deep font-bold uppercase tracking-widest text-[10px] py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       <main>
-        {/* Section: Hero */}
-        <section id="inicio" className="relative h-screen flex items-center px-6 overflow-hidden">
+        <section id="inicio" className="relative h-screen flex items-center justify-center px-6 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2000" 
               alt="Oficina Corporativa TESSA" 
-              className="w-full h-screen object-cover scale-105"
+              className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-tessa-deep/40 backdrop-brightness-75"></div>
+            <div className="absolute inset-0 bg-tessa-deep/60 backdrop-blur-[2px]"></div>
           </div>
 
-          <div className="max-w-7xl mx-auto w-full relative z-10">
+          <div className="max-w-5xl mx-auto w-full relative z-10 text-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-3xl"
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="text-6xl md:text-[7rem] font-black text-white leading-[0.9] mb-8 tracking-tighter">
+              <div className="mb-8 overflow-hidden inline-block">
+                <motion.span 
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="inline-block text-white uppercase tracking-[0.6em] text-[10px] font-black px-6 py-2 border border-white/20 bg-white/10 backdrop-blur-md rounded-full shadow-2xl"
+                >
+                  Diseñamos hoy el legado del mañana
+                </motion.span>
+              </div>
+              
+              <h1 className="text-5xl md:text-8xl font-black text-white leading-[1.1] mb-10 tracking-tighter drop-shadow-2xl">
                 DEL RESIDUO A LA <br />
-                <span className="text-stroke text-white opacity-80">RELIQUIA.</span>
+                <span className="italic text-tessa-bright font-light">RELIQUIA.</span>
               </h1>
-              <p className="text-xl md:text-2xl text-white/90 max-w-xl mb-12 leading-relaxed font-light">
-                Transformamos plástico reciclado en mobiliario corporativo premium con impacto ambiental positivo.
+              
+              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed font-light drop-shadow-md">
+                Mobiliario corporativo de alta gama fabricado con polímeros reciclados y fibras textiles. Innovación circular que redefine el lujo empresarial.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6">
-                <button className="bg-tessa-bright text-white px-10 py-5 flex items-center justify-center space-x-3 rounded-2xl hover:bg-white hover:text-tessa-deep transition-all font-bold uppercase tracking-widest text-xs shadow-2xl shadow-tessa-bright/20 active:scale-95">
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button className="bg-tessa-bright text-white px-12 py-5 flex items-center space-x-4 rounded-2xl hover:bg-white hover:text-tessa-deep transition-all font-bold uppercase tracking-widest text-[10px] shadow-2xl shadow-tessa-bright/40 active:scale-95 group">
                   <span>Explorar colección</span>
-                  <ArrowRight size={18} />
+                  <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                 </button>
-                <button className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-5 rounded-2xl hover:bg-white hover:text-tessa-deep transition-all font-bold uppercase tracking-widest text-xs shadow-sm active:scale-95">
+                <button className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-12 py-5 rounded-2xl hover:bg-white hover:text-tessa-deep transition-all font-bold uppercase tracking-widest text-[10px] active:scale-95">
                   Conocer impacto
                 </button>
               </div>
@@ -115,11 +160,10 @@ export default function App() {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
+            transition={{ delay: 2, duration: 1 }}
             className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-4"
           >
-            <span className="text-[10px] uppercase font-bold tracking-[0.4em] text-white/50">Scroll para explorar</span>
-            <div className="w-px h-12 bg-gradient-to-b from-tessa-bright to-transparent"></div>
+            <div className="w-px h-16 bg-gradient-to-b from-tessa-bright via-white/50 to-transparent"></div>
           </motion.div>
         </section>
 
@@ -257,7 +301,7 @@ export default function App() {
             </div>
           </div>
         </section>
-        <section id=" impact" className="py-40 bg-white overflow-hidden">
+        <section id="impacto" className="py-40 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid lg:grid-cols-2 gap-24 items-center">
               <div>
